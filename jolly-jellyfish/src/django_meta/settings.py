@@ -24,7 +24,9 @@ else:
     config = {
         'secret_key': generate_key(),
         'debug': True,
-        'allowed_hosts': []
+        'allowed_hosts': [
+            '.halfway.artemisdev.xyz',
+        ]
     }
     with open(config_file, 'w') as f:
         json.dump(config, f, indent=4)
@@ -37,6 +39,7 @@ ALLOWED_HOSTS = config['allowed_hosts']
 
 INSTALLED_APPS = [
     'page_maker.apps.PageMakerConfig',
+    'django_hosts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django_hosts.middleware.HostsRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,8 +57,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_hosts.middleware.HostsResponseMiddleware',
 ]
 
+DEFAULT_HOST = 'main'
+
+ROOT_HOSTCONF = 'django_meta.hosts'
 ROOT_URLCONF = 'django_meta.urls'
 
 TEMPLATES = [

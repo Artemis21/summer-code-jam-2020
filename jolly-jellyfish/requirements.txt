@@ -1,6 +1,12 @@
-# requirements.txt version of Pipfile
+# requirements.txt version of Pipfile.
 # this may be out of date, but it should
 # be easier to read at the very least...
 
 # webpages:
 django ~= 3.0
+
+# domain -> user routing:
+django-hosts ~= 4.0
+
+# ImageField support
+Pillow ~= 7.2.0
