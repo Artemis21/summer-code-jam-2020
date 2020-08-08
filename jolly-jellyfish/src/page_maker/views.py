@@ -33,6 +33,8 @@ class UserDetailView(DetailView):
     model = User
     context_object_name = 'viewed_user'
     template_name = 'page_maker/user_detail.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,7 +48,8 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = User
     template_name = 'page_maker/user_update.html'
     fields = ['first_name', 'last_name', 'email']
-    success_url = '/'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
 
     def test_func(self):
         user = self.get_object()
@@ -54,11 +57,16 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
+    def get_success_url(self):
+        return reverse_lazy('user-detail', kwargs={'username': self.get_object().username})
+
 
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = User
     template_name = 'page_maker/user_delete.html'
     success_url = '/'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
 
     def test_func(self):
         user = self.get_object()
@@ -215,6 +223,7 @@ class TemplateView(DetailView):
 class TemplateDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Template
     template_name = 'page_maker/template_delete.html'
+    success_url = '/'
     slug_field = 'name'
     slug_url_kwarg = 'templatename'
 
