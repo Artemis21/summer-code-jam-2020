@@ -45,6 +45,12 @@ $ pipenv shell
 (venv) $ python manage.py migrate
 ```
 
+### Using docker-compose
+Modify `src/config.json` to have `"on_docker": true`.
+
+Run the project with `docker-compose up` in the main folder
+(`jolly-jellyfish`), and visit `127.0.0.1:8000`. Enjoy!
+
 ## Usage
 ```sh
 (venv) $ cd src
