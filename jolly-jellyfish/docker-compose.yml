@@ -1,8 +1,16 @@
 version: '3'
 services:
+  chromedriver:
+    image: selenium/standalone-firefox
+    ports:
+      - "4444:4444"
+    container_name: thumbnailer
+
   web:
     build: .
     ports:
       - "8000:8000"
     environment:
       - ADMIN_PASSWORD=adminpasswd
+    links:
+      - chromedriver

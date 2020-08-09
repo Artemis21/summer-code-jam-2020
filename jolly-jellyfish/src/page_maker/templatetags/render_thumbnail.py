@@ -10,6 +10,7 @@ from django.utils import timezone
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FireOptions
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from ..models import Webpage, Template
 
@@ -17,7 +18,8 @@ register = template.Library()  # registers function in this file as template tag
 
 
 try:
-    DRIVER_PATH = os.environ['SELENIUM_DRIVER']
+    if not settings.ON_DOCKER:
+        DRIVER_PATH = os.environ['SELENIUM_DRIVER']
 except KeyError:
     raise KeyError('SELENIUM_DRIVER system environment variable not found.\n'
                    'Check the README for details on setting it.\n'
@@ -93,16 +95,22 @@ def render_thumbnail(request: HttpRequest, url_to_render: str, page_obj: Union[W
         else:
             window_size = '1980,1080'
 
-        if 'chromedriver' in DRIVER_PATH:
-            options = add_options(ChromeOptions(), window_size)
-            driver = webdriver.Chrome(executable_path=DRIVER_PATH, options=options)
-        elif 'geckodriver' in DRIVER_PATH:
-            options = add_options(FireOptions(), window_size)
-            driver = webdriver.Firefox(executable_path=DRIVER_PATH, options=options)
+        if not settings.ON_DOCKER:
+            if 'chromedriver' in DRIVER_PATH:
+                options = add_options(ChromeOptions(), window_size)
+                driver = webdriver.Chrome(executable_path=DRIVER_PATH, options=options)
+            elif 'geckodriver' in DRIVER_PATH:
+                options = add_options(FireOptions(), window_size)
+                driver = webdriver.Firefox(executable_path=DRIVER_PATH, options=options)
+            else:
+                raise Exception('The driver specified in SELENIUM_DRIVER is not supported.\n'
+                                "Currently, only Chrome/Chromium ('chromedriver') and Firefox ('geckodriver') are supported.\n"
+                                'Please install one of these browsers and the associated driver.')
         else:
-            raise Exception('The driver specified in SELENIUM_DRIVER is not supported.\n'
-                            "Currently, only Chrome/Chromium ('chromedriver') and Firefox ('geckodriver') are supported.\n"
-                            'Please install one of these browsers and the associated driver.')
+            # we assume Firefox cause that's what docker-compose comes with
+            driver = webdriver.Remote(
+                command_executor='http://thumbnailer:4444/wd/hub',
+                desired_capabilities=DesiredCapabilities.FIREFOX)
 
         url = request.build_absolute_uri(url_to_render) + '?rendering=true'
 

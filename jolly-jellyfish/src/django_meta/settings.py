@@ -36,7 +36,8 @@ else:
     config = {
         'secret_key': generate_key(),
         'debug': True,
-        'allowed_hosts': []
+        'allowed_hosts': [],
+        'on_docker': False
     }
     with open(config_file, 'w') as f:
         json.dump(config, f, indent=4)
@@ -44,6 +45,7 @@ else:
 SECRET_KEY = config['secret_key']
 DEBUG = config['debug']
 ALLOWED_HOSTS = config['allowed_hosts']
+ON_DOCKER = config['on_docker']
 
 # Application definition
 

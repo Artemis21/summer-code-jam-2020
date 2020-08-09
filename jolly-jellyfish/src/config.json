@@ -1,5 +1,6 @@
 {
     "secret_key": null,
     "debug": true,
-    "allowed_hosts": []
+    "allowed_hosts": [],
+    "on_docker": false
 }
