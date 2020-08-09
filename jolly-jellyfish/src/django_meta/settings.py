@@ -47,6 +47,9 @@ DEBUG = config['debug']
 ALLOWED_HOSTS = config['allowed_hosts']
 ON_DOCKER = config['on_docker']
 
+if ON_DOCKER:
+    ALLOWED_HOSTS += ['halfway', '127.0.0.1']
+
 # Application definition
 
 INSTALLED_APPS = [

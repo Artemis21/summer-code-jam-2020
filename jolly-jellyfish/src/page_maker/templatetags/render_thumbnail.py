@@ -106,13 +106,16 @@ def render_thumbnail(request: HttpRequest, url_to_render: str, page_obj: Union[W
                 raise Exception('The driver specified in SELENIUM_DRIVER is not supported.\n'
                                 "Currently, only Chrome/Chromium ('chromedriver') and Firefox ('geckodriver') are supported.\n"
                                 'Please install one of these browsers and the associated driver.')
+
+            url = request.build_absolute_uri(url_to_render) + '?rendering=true'
+
         else:
             # we assume Firefox cause that's what docker-compose comes with
             driver = webdriver.Remote(
                 command_executor='http://thumbnailer:4444/wd/hub',
                 desired_capabilities=DesiredCapabilities.FIREFOX)
 
-        url = request.build_absolute_uri(url_to_render) + '?rendering=true'
+            url = f'http://halfway:8000{url_to_render}?rendering=true'
 
         # NB: This function raises: "ConnectionResetError: [WinError 10054] ...
         # An existing connection was forcibly closed by the remote host" in console.

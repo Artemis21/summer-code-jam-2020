@@ -5,6 +5,8 @@ services:
     ports:
       - "4444:4444"
     container_name: thumbnailer
+    volumes:
+      - thumnail-volume:/app/src/user_media/thumbnails
 
   web:
     build: .
@@ -12,5 +14,11 @@ services:
       - "8000:8000"
     environment:
       - ADMIN_PASSWORD=adminpasswd
+    container_name: halfway
     links:
       - chromedriver
+    volumes:
+      - thumnail-volume:/app/src/user_media/thumbnails
+
+volumes:
+  thumnail-volume:
