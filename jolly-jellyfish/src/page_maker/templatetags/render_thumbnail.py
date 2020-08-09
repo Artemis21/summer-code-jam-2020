@@ -109,7 +109,7 @@ def render_thumbnail(request: HttpRequest, url_to_render: str, page_obj: Union[W
         else:
             # we assume Firefox cause that's what docker-compose comes with
             driver = webdriver.Remote(
-                command_executor='http://thumbnailer:4444/wd/hub',
+                command_executor='http://127.0.0.1:4444/wd/hub',
                 desired_capabilities=DesiredCapabilities.FIREFOX)
 
         url = request.build_absolute_uri(url_to_render) + '?rendering=true'
