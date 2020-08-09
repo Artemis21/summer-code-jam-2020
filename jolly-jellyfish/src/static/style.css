@@ -6,7 +6,7 @@
 
 @font-face {
   font-family: 'hellovetica';
-  src: url('/static/fonts/hellovetica.woff2') format('woff2');
+  src: url('/user_media/static/fonts/hellovetica.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   unicode-range: U+21,U+22,U+27,U+2C-2E,U+3A,U+3B,U+3F,U+41-5A,U+61-7A;
@@ -21,7 +21,7 @@ body {
     font-family: hellovetica, "MS Sans Serif", "News Cycle", sans-serif;
     font-size: 10px;
     min-height: 100%;
-    background: #008081 url("/static/images/win95-toolbar.png") center bottom / 100% auto no-repeat;
+    background: #008081 url("/user_media/static/images/win95-toolbar.png") center bottom / 100% auto no-repeat;
 }
 
 main {
@@ -71,7 +71,7 @@ header {
 }
 
 header > *:first-child, main > div:last-child > *:first-child {
-  background: #010080 url("/static/images/win95-close.png") calc(100% - 1em + 12px) center no-repeat;
+  background: #010080 url("/user_media/static/images/win95-close.png") calc(100% - 1em + 12px) center no-repeat;
   color: #fff;
   padding: 5px;
 }
